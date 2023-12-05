@@ -1,0 +1,9 @@
+{
+	"name": "AshishADFFacotry",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "436cab3b-f76e-4c8f-88e9-143c49eec40c",
+		"tenantId": "c15e6eb5-7bf5-40fe-bdf8-8e70a0b86135"
+	}
+}
