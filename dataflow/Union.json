@@ -1,0 +1,85 @@
+{
+	"name": "Union",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "HRDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "HRdata"
+				},
+				{
+					"dataset": {
+						"referenceName": "ITdataset",
+						"type": "DatasetReference"
+					},
+					"name": "ITdata"
+				},
+				{
+					"dataset": {
+						"referenceName": "PayrollDataset",
+						"type": "DatasetReference"
+					},
+					"name": "Payrolldata"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SinkDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "HRunion"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          empname as string,",
+				"          country as string,",
+				"          depatment as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> HRdata",
+				"source(output(",
+				"          empid as string,",
+				"          empname as string,",
+				"          country as string,",
+				"          depatment as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> ITdata",
+				"source(output(",
+				"          empid as string,",
+				"          empname as string,",
+				"          country as string,",
+				"          depatment as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Payrolldata",
+				"HRdata, ITdata, Payrolldata union(byName: true)~> HRunion",
+				"HRunion sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     partitionFileNames:['AllEmpDepData.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
