@@ -1,9 +1,9 @@
 {
-	"name": "FilterData",
+	"name": "Split",
 	"properties": {
 		"activities": [
 			{
-				"name": "FilterDataFlow",
+				"name": "Split",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "FilterDataFlow",
+						"referenceName": "Split",
 						"type": "DataFlowReference"
 					},
 					"compute": {

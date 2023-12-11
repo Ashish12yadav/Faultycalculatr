@@ -1,0 +1,90 @@
+{
+	"name": "Split",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "EmpData"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SinkDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SinkDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "SinkDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          empname as string,",
+				"          country as string,",
+				"          depatment as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmpData",
+				"EmpData split(equals(depatment,'1'),",
+				"     equals(depatment,'2'),",
+				"     equals(depatment,'3'),",
+				"     disjoint: false) ~> split1@(ITEmployees, HREmployee, PayrollEmployee)",
+				"split1@ITEmployees sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     partitionFileNames:['ITEmployee'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"split1@PayrollEmployee sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     partitionFileNames:['PayrollEmp'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink2",
+				"split1@HREmployee sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          depid as string,",
+				"          depname as string",
+				"     ),",
+				"     partitionFileNames:['HREmp'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink3"
+			]
+		}
+	}
+}

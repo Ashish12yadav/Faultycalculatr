@@ -1,9 +1,9 @@
 {
-	"name": "FilterData",
+	"name": "Join",
 	"properties": {
 		"activities": [
 			{
-				"name": "FilterDataFlow",
+				"name": "Agrigatedata",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "FilterDataFlow",
+						"referenceName": "Agrigatedata",
 						"type": "DataFlowReference"
 					},
 					"compute": {
